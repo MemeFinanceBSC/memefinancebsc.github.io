@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="1440" height="800" viewBox="0 0 1440 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Hero Background with Crypto Theme -->
+  <rect width="1440" height="800" fill="#000000"/>
+  
+  <!-- Grid Pattern -->
+  <path d="M0 100H1440" stroke="#F0B90B" stroke-opacity="0.1" stroke-width="1"/>
+  <path d="M0 200H1440" stroke="#F0B90B" stroke-opacity="0.1" stroke-width="1"/>
+  <path d="M0 300H1440" stroke="#F0B90B" stroke-opacity="0.1" stroke-width="1"/>
+  <path d="M0 400H1440" stroke="#F0B90B" stroke-opacity="0.1" stroke-width="1"/>
+  <path d="M0 500H1440" stroke="#F0B90B" stroke-opacity="0.1" stroke-width="1"/>
+  <path d="M0 600H1440" stroke="#F0B90B" stroke-opacity="0.1" stroke-width="1"/>
+  <path d="M0 700H1440" stroke="#F0B90B" stroke-opacity="0.1" stroke-width="1"/>
+  
+  <path d="M100 0V800" stroke="#F0B90B" stroke-opacity="0.1" stroke-width="1"/>
+  <path d="M200 0V800" stroke="#F0B90B" stroke-opacity="0.1" stroke-width="1"/>
+  <path d="M300 0V800" stroke="#F0B90B" stroke-opacity="0.1" stroke-width="1"/>
+  <path d="M400 0V800" stroke="#F0B90B" stroke-opacity="0.1" stroke-width="1"/>
+  <path d="M500 0V800" stroke="#F0B90B" stroke-opacity="0.1" stroke-width="1"/>
+  <path d="M600 0V800" stroke="#F0B90B" stroke-opacity="0.1" stroke-width="1"/>
+  <path d="M700 0V800" stroke="#F0B90B" stroke-opacity="0.1" stroke-width="1"/>
+  <path d="M800 0V800" stroke="#F0B90B" stroke-opacity="0.1" stroke-width="1"/>
+  <path d="M900 0V800" stroke="#F0B90B" stroke-opacity="0.1" stroke-width="1"/>
+  <path d="M1000 0V800" stroke="#F0B90B" stroke-opacity="0.1" stroke-width="1"/>
+  <path d="M1100 0V800" stroke="#F0B90B" stroke-opacity="0.1" stroke-width="1"/>
+  <path d="M1200 0V800" stroke="#F0B90B" stroke-opacity="0.1" stroke-width="1"/>
+  <path d="M1300 0V800" stroke="#F0B90B" stroke-opacity="0.1" stroke-width="1"/>
+  <path d="M1400 0V800" stroke="#F0B90B" stroke-opacity="0.1" stroke-width="1"/>
+  
+  <!-- Crypto Symbols -->
+  <!-- BNB Symbol -->
+  <g transform="translate(200, 200) scale(0.5)">
+    <circle cx="100" cy="100" r="100" fill="#F0B90B" fill-opacity="0.1"/>
+    <path d="M100 50L70 80L100 110L130 80L100 50Z" stroke="#F0B90B" stroke-width="5" fill="none"/>
+    <path d="M100 150L70 120L100 90L130 120L100 150Z" stroke="#F0B90B" stroke-width="5" fill="none"/>
+    <path d="M50 100L80 70L80 130L50 100Z" stroke="#F0B90B" stroke-width="5" fill="none"/>
+    <path d="M150 100L120 70L120 130L150 100Z" stroke="#F0B90B" stroke-width="5" fill="none"/>
+  </g>
+  
+  <!-- ETH Symbol -->
+  <g transform="translate(1000, 300) scale(0.5)">
+    <circle cx="100" cy="100" r="100" fill="#F0B90B" fill-opacity="0.1"/>
+    <path d="M100 40L60 110L100 90L140 110L100 40Z" stroke="#F0B90B" stroke-width="5" fill="none"/>
+    <path d="M100 160L60 120L100 140L140 120L100 160Z" stroke="#F0B90B" stroke-width="5" fill="none"/>
+  </g>
+  
+  <!-- BTC Symbol -->
+  <g transform="translate(400, 500) scale(0.5)">
+    <circle cx="100" cy="100" r="100" fill="#F0B90B" fill-opacity="0.1"/>
+    <path d="M120 60C140 65 150 80 145 95C140 110 125 115 110 115H80V85H110C120 85 125 75 120 70C115 65 105 65 95 65H80V60H120Z" stroke="#F0B90B" stroke-width="5" fill="none"/>
+    <path d="M120 115C140 120 150 135 145 150C140 165 125 170 110 170H80V140H110C120 140 125 130 120 125C115 120 105 120 95 120H80V115H120Z" stroke="#F0B90B" stroke-width="5" fill="none"/>
+    <path d="M90 40V60" stroke="#F0B90B" stroke-width="5"/>
+    <path d="M110 40V60" stroke="#F0B90B" stroke-width="5"/>
+    <path d="M90 170V190" stroke="#F0B90B" stroke-width="5"/>
+    <path d="M110 170V190" stroke="#F0B90B" stroke-width="5"/>
+  </g>
+  
+  <!-- MEMEFI Symbol -->
+  <g transform="translate(800, 600) scale(0.8)">
+    <circle cx="100" cy="100" r="100" fill="#F0B90B" fill-opacity="0.2"/>
+    <path d="M70 60H80L90 90L100 60H110L120 90L130 60H140L125 140H115L105 90L95 140H85L70 60Z" stroke="#F0B90B" stroke-width="5" fill="none"/>
+  </g>
+  
+  <!-- Gradient Overlay -->
+  <rect width="1440" height="800" fill="url(#paint0_radial)"/>
+  
+  <defs>
+    <radialGradient id="paint0_radial" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(720 400) rotate(90) scale(400 720)">
+      <stop stop-color="#000000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000000" stop-opacity="0.7"/>
+    </radialGradient>
+  </defs>
+</svg> 

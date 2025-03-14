@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MEMEFI - Redefining the Fusion of Meme and DeFi</title>
+    <meta name="description" content="MEMEFI represents the perfect fusion of Meme culture and Decentralized Finance (DeFi), designed to revitalize the cryptocurrency market.">
+    
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="images/favicon.png" type="image/png">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Bootstrap CSS (non-compilation framework) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Loading Animation -->
+    <div class="loader-wrapper">
+        <div class="loader"></div>
+    </div>
+    
+    <!-- Notification Container -->
+    <div class="notification-container" id="notificationContainer"></div>
+    
+    <!-- Header -->
+    <header class="header">
+        <div class="crypto-ticker">
+            <div class="container">
+                <div class="ticker-wrapper">
+                    <div class="ticker-item">
+                        <span class="ticker-coin">BTC</span>
+                        <span class="ticker-price" id="btcPrice">Loading...</span>
+                        <span class="ticker-change" id="btcChange">0%</span>
+                    </div>
+                    <div class="ticker-item">
+                        <span class="ticker-coin">ETH</span>
+                        <span class="ticker-price" id="ethPrice">Loading...</span>
+                        <span class="ticker-change" id="ethChange">0%</span>
+                    </div>
+                    <div class="ticker-item">
+                        <span class="ticker-coin">BNB</span>
+                        <span class="ticker-price" id="bnbPrice">Loading...</span>
+                        <span class="ticker-change" id="bnbChange">0%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <nav class="navbar navbar-expand-lg">
+                <a href="index.html" class="navbar-brand">
+                    <img src="images/memefi-logo.png" alt="MEMEFI Logo" class="logo-img">
+                </a>
+                
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a href="#ido" class="nav-link">IDO</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#about" class="nav-link">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#tokenomics" class="nav-link">Tokenomics</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#roadmap" class="nav-link">Roadmap</a>
+                        </li>
+                        <li class="nav-item">
+                            <button id="connectWalletBtn" class="btn btn-connect">Connect Wallet</button>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- Hero Section -->
+    <section class="hero" style="background-image: url('images/hero-background.png')">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="hero-title"><span>MEME</span> and <span>DEFI</span></h1>
+                    <p class="hero-subtitle">Launching a Community-Driven Wealth Ecosystem where "Ownership Equals Wealth"</p>
+                <div class="hero-buttons">
+                        <a href="#ido" class="btn btn-primary">Join IDO</a>
+                        <a href="#about" class="btn btn-secondary">Learn More</a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <img src="images/hero-image.png" alt="MEMEFI Hero" class="hero-image">
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- IDO Section -->
+    <section id="ido" class="ido">
+        <div class="container">
+            <div class="ido-content">
+                <div class="section-header text-center">
+                    <h2 class="section-title">MEMEFI IDO</h2>
+                    <p class="section-subtitle">Join our Initial Decentralized Offering and be part of the revolution</p>
+                </div>
+                
+                <!-- IDO Stats Banner -->
+                <div class="ido-stats-banner">
+                    <div class="ido-stat">
+                        <div class="ido-stat-icon">
+                            <i class="fas fa-coins"></i>
+                        </div>
+                        <div class="ido-stat-content">
+                            <h4>Price Per Share</h4>
+                            <p>100 U</p>
+                        </div>
+                    </div>
+                    <div class="ido-stat">
+                        <div class="ido-stat-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="ido-stat-content">
+                            <h4>Token Rate</h4>
+                            <p>9,500 MMF</p>
+                        </div>
+                    </div>
+                    <div class="ido-stat">
+                        <div class="ido-stat-icon">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <div class="ido-stat-content">
+                            <h4>Max Per Wallet</h4>
+                            <p>5 Shares</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="ido-info-card">
+                            <div class="ido-info-header">
+                                <h3>Fundraising Target</h3>
+                            </div>
+                            <div class="ido-info-body">
+                                <div class="target-amount">1,000,000 U</div>
+                                <div class="progress-container">
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar" style="width: 0%"></div>
+                                    </div>
+                                    <div class="progress-text">
+                                        <span>0 U</span>
+                                        <span>1,000,000 U</span>
+                                    </div>
+                                </div>
+                                <div class="current-raised">
+                                    <span>Current Raised:</span>
+                                    <span id="currentRaised">0 U</span>
+                                </div>
+                                
+                                <div class="countdown-container mt-4">
+                                    <h4 class="text-center mb-3">IDO Ends In:</h4>
+                                    <div id="idoCountdown" class="countdown">
+                                        <div class="countdown-item">
+                                            <span class="countdown-number" id="countdown-days">00</span>
+                                            <span class="countdown-label">Days</span>
+                                        </div>
+                                        <div class="countdown-item">
+                                            <span class="countdown-number" id="countdown-hours">00</span>
+                                            <span class="countdown-label">Hours</span>
+                                        </div>
+                                        <div class="countdown-item">
+                                            <span class="countdown-number" id="countdown-minutes">00</span>
+                                            <span class="countdown-label">Minutes</span>
+                                        </div>
+                                        <div class="countdown-item">
+                                            <span class="countdown-number" id="countdown-seconds">00</span>
+                                            <span class="countdown-label">Seconds</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="ido-benefits-card">
+                            <div class="ido-info-header">
+                                <h3>IDO Benefits</h3>
+                            </div>
+                            <div class="ido-info-body">
+                                <div class="benefits-list">
+                                    <div class="benefit-item">
+                                        <div class="benefit-icon">
+                                            <i class="fas fa-gift"></i>
+                                        </div>
+                                        <div class="benefit-content">
+                                            <h4>Early Access</h4>
+                                            <p>Be among the first to own MEMEFI tokens</p>
+                                        </div>
+                                    </div>
+                                    <div class="benefit-item">
+                                        <div class="benefit-icon">
+                                            <i class="fas fa-percentage"></i>
+                                        </div>
+                                        <div class="benefit-content">
+                                            <h4>Referral Bonus</h4>
+                                            <p>Earn 5% bonus tokens for each referral</p>
+                                        </div>
+                                    </div>
+                                    <div class="benefit-item">
+                                        <div class="benefit-icon">
+                                            <i class="fas fa-lock"></i>
+                                        </div>
+                                        <div class="benefit-content">
+                                            <h4>Guaranteed Allocation</h4>
+                                            <p>Secure your position in the MEMEFI ecosystem</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-6">
+                        <div class="mint-card">
+                            <div class="mint-card-header">
+                                <h3>Mint MEMEFI Tokens</h3>
+                            </div>
+                            <div class="mint-card-body">
+                                <div class="wallet-status">
+                                    <div id="walletStatusText">Wallet not connected</div>
+                                    <div id="walletAddress" class="wallet-address"></div>
+                                </div>
+                                
+                                <div class="referrer-container">
+                                    <label for="referrerAddress">Referrer Address (Optional)</label>
+                                    <input type="text" id="referrerAddress" class="form-control" placeholder="Enter referrer address">
+                                    <div class="referrer-info">
+                                        <i class="fas fa-info-circle"></i>
+                                        <span>Referrers receive 5% bonus of the tokens acquired by their referees</span>
+                                    </div>
+                                    <button id="generateReferralBtn" class="btn btn-secondary mt-2">Generate Referral Link</button>
+                                </div>
+                                
+                                <div class="share-selector">
+                                    <label>Select Number of Shares</label>
+                                    <div class="share-buttons">
+                                        <button class="share-button" data-shares="1">1</button>
+                                        <button class="share-button" data-shares="2">2</button>
+                                        <button class="share-button" data-shares="3">3</button>
+                                        <button class="share-button" data-shares="4">4</button>
+                                        <button class="share-button" data-shares="5">5</button>
+                                    </div>
+                                    <div class="share-summary">
+                                        <div class="share-summary-item">
+                                            <span>Selected Shares:</span>
+                                            <span id="selectedShares">0</span>
+                                        </div>
+                                        <div class="share-summary-item">
+                                            <span>Total Cost:</span>
+                                            <span id="totalCost">0 U</span>
+                                        </div>
+                                        <div class="share-summary-item">
+                                            <span>Tokens to Receive:</span>
+                                            <span id="tokensToReceive">0 MEMEFI</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <button id="mintButton" class="btn btn-mint" disabled>Mint MMF</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ido-illustration">
+                    <img src="images/ido-illustration.png" alt="IDO Process" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <div class="section-header text-center">
+                <h2 class="section-title">About MEMEFI</h2>
+                <p class="section-subtitle">The perfect fusion of Meme culture and Decentralized Finance</p>
+            </div>
+            
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <img src="images/about-image.png" alt="About MEMEFI" class="about-image">
+                </div>
+                <div class="col-lg-6">
+                    <div class="about-content">
+                        <h3>Project Vision</h3>
+                        <p>MEMEFI represents the perfect fusion of Meme culture and Decentralized Finance (DeFi), designed to revitalize the currently bearish cryptocurrency market through a powerful economic model, high community consensus, and innovative token mechanisms.</p>
+                        
+                        <h3>Core Philosophy</h3>
+                        <p>Our motto: "Sellers regret, holders earn dividends." MEMEFI transcends the typical Meme coin project, establishing itself as a holder-centric ecosystem that drives value growth through dynamic taxation and follow-up mechanisms.</p>
+                        
+                        <div class="about-features">
+                            <div class="about-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Holder Supremacy: 95% of follow-up revenue distributed as dividends</span>
+                            </div>
+                            <div class="about-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Selling Penalty: Selling triggers burning and price increases</span>
+                            </div>
+                            <div class="about-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Scarcity Driver: Black hole cycle + continuous burning</span>
+                            </div>
+                            <div class="about-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Community Consensus: Tax revenue funds promotion and development</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Tokenomics Section -->
+    <section id="tokenomics" class="tokenomics">
+        <div class="container">
+            <div class="tokenomics-content">
+                <div class="section-header text-center">
+                    <h2 class="section-title">Tokenomics</h2>
+                    <p class="section-subtitle">Understanding MEMEFI's economic model</p>
+                </div>
+                
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="tokenomics-card">
+                            <div class="tokenomics-card-header">
+                                <h3>Token Distribution</h3>
+                            </div>
+                            <div class="tokenomics-card-body">
+                                <div class="distribution-chart">
+                                    <div class="chart-placeholder">
+                                        <img src="images/distribution-chart.png" alt="Token Distribution Chart">
+                                    </div>
+                                </div>
+                                <div class="distribution-info">
+                                    <div class="distribution-item">
+                                        <div class="distribution-color black-hole"></div>
+                                        <div class="distribution-text">
+                                            <h4>Black Hole Reserves</h4>
+                                            <p>90% (9 billion tokens)</p>
+                                        </div>
+                                    </div>
+                                    <div class="distribution-item">
+                                        <div class="distribution-color circulation"></div>
+                                        <div class="distribution-text">
+                                            <h4>Circulation</h4>
+                                            <p>10% (1 billion tokens)</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-6">
+                        <div class="tokenomics-card">
+                            <div class="tokenomics-card-header">
+                                <h3>Transaction Tax</h3>
+                            </div>
+                            <div class="tokenomics-card-body">
+                                <div class="tax-info">
+                                    <p>Each buy/sell transaction incurs a 3.5% tax fee, allocated as follows:</p>
+                                    <div class="tax-item">
+                                        <div class="tax-percentage">2%</div>
+                                        <div class="tax-description">
+                                            <h4>Project Development</h4>
+                                            <p>Marketing, community activities, technical development</p>
+                                        </div>
+                                    </div>
+                                    <div class="tax-item">
+                                        <div class="tax-percentage">0.7%</div>
+                                        <div class="tax-description">
+                                            <h4>Community Building</h4>
+                                            <p>Supporting community growth and engagement</p>
+                                        </div>
+                                    </div>
+                                    <div class="tax-item">
+                                        <div class="tax-percentage">0.8%</div>
+                                        <div class="tax-description">
+                                            <h4>Liquidity Pool</h4>
+                                            <p>Increasing depth and enhancing market stability</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="tokenomics-card">
+                            <div class="tokenomics-card-header">
+                                <h3>Follow-up Mechanism</h3>
+                            </div>
+                            <div class="tokenomics-card-body">
+                                <div class="mechanism-info">
+                                    <p>MEMEFI introduces an innovative follow-up selling mechanism, automatically triggered through smart contracts to ensure that selling actions drive price increases rather than decreases.</p>
+                                    
+                                    <div class="mechanism-item">
+                                        <div class="mechanism-icon">
+                                            <i class="fas fa-sync-alt"></i>
+                                        </div>
+                                        <div class="mechanism-content">
+                                            <h4>Trigger Condition</h4>
+                                            <p>Each time a user sells tokens, the contract automatically calls an equal number of tokens from the black hole to follow the sell.</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mechanism-item">
+                                        <div class="mechanism-icon">
+                                            <i class="fas fa-money-bill-wave"></i>
+                                        </div>
+                                        <div class="mechanism-content">
+                                            <h4>Fund Distribution</h4>
+                                            <p><strong>95%:</strong> Distributed as weighted dividends in USDT to all token holders, directly deposited into wallets, rewarding long-term holders.</p>
+                                            <p><strong>5%:</strong> Allocated to the project development fund to support ecosystem growth.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tokenomics-illustration">
+                    <img src="images/tokenomics.png" alt="MEMEFI Tokenomics" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Roadmap Section -->
+    <section id="roadmap" class="roadmap">
+        <div class="container">
+            <div class="section-header text-center">
+                <h2 class="section-title">Roadmap</h2>
+                <p class="section-subtitle">Our journey to revolutionize the crypto space</p>
+            </div>
+            
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="roadmap-illustration">
+                        <img src="images/roadmap-new.png" alt="MEMEFI Roadmap" loading="lazy">
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <div class="roadmap-details">
+                        <div class="roadmap-phase">
+                            <div class="phase-number">01</div>
+                            <div class="phase-content">
+                                <h3>Launch</h3>
+                                <ul>
+                                    <li>ICO Launch with 10,000 participants</li>
+                                    <li>Initial liquidity pool setup (50,000 U)</li>
+                                    <li>Token listing and trading activation</li>
+                                    <li>Community building and expansion</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="roadmap-phase">
+                            <div class="phase-number">02</div>
+                            <div class="phase-content">
+                                <h3>Growth</h3>
+                                <ul>
+                                    <li>Implementation of follow-up mechanism</li>
+                                    <li>Dividend distribution activation</li>
+                                    <li>Marketing and community expansion</li>
+                                    <li>Strategic partnerships</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="roadmap-phase">
+                            <div class="phase-number">03</div>
+                            <div class="phase-content">
+                                <h3>Expansion</h3>
+                                <ul>
+                                    <li>DeFi ecosystem development</li>
+                                    <li>Additional features (lending, staking)</li>
+                                    <li>Cross-chain integration</li>
+                                    <li>Global community expansion</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="roadmap-phase">
+                            <div class="phase-number">04</div>
+                            <div class="phase-content">
+                                <h3>Maturity</h3>
+                                <ul>
+                                    <li>Complete black hole consumption</li>
+                                    <li>Ecosystem maturation</li>
+                                    <li>Governance implementation</li>
+                                    <li>Long-term sustainability measures</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="container">
+            <div class="section-header text-center">
+                <h2 class="section-title">Frequently Asked Questions</h2>
+                <p class="section-subtitle">Get answers to common questions about MEMEFI</p>
+            </div>
+            
+            <div class="accordion" id="faqAccordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                            What is MEMEFI?
+                        </button>
+                    </h2>
+                    <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            MEMEFI represents the perfect fusion of Meme culture and Decentralized Finance (DeFi), designed to revitalize the cryptocurrency market through a powerful economic model, high community consensus, and innovative token mechanisms.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                            How does the referral system work?
+                        </button>
+                    </h2>
+                    <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            During the initial ICO phase, users can bind a referrer's wallet address on the website. Referrers will receive an additional 5% bonus of the tokens acquired by their referees. For example, for each person invited, the referrer receives 9,500 tokens × 5% = 475 MMF tokens. Rewards will be credited in real-time when users mint.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                            What is the follow-up mechanism?
+                        </button>
+                    </h2>
+                    <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            MEMEFI introduces an innovative follow-up selling mechanism, automatically triggered through smart contracts. Each time a user sells tokens, the contract automatically calls an equal number of tokens from the black hole to follow the sell. 95% of this is distributed as weighted dividends in USDT to all token holders, and 5% is allocated to the project development fund.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                            How many tokens can I purchase during the ICO?
+                        </button>
+                    </h2>
+                    <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Each address can purchase a maximum of 5 shares during the ICO. Each share costs 100 U and provides 9,500 MMF tokens. Therefore, the maximum purchase per address is 500 U for 47,500 MMF tokens.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+                            When will trading be available?
+                        </button>
+                    </h2>
+                    <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Trading will be available immediately after the ICO completion. Tokens will be automatically allocated to user accounts and unlocked for trading at launch.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="footer-brand">
+                        <img src="images/memefi-logo.png" alt="MEMEFI Logo" class="footer-logo">
+                    </div>
+                    <p class="footer-description">Redefining the fusion of Meme and DeFi, launching a community-driven wealth ecosystem where "Ownership Equals Wealth".</p>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-telegram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-medium"></i></a>
+                    </div>
+            </div>
+            
+                <div class="col-lg-2">
+                <h3 class="footer-title">Quick Links</h3>
+                <ul class="footer-links">
+                        <li><a href="#ido">IDO</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#tokenomics">Tokenomics</a></li>
+                        <li><a href="#roadmap">Roadmap</a></li>
+                </ul>
+            </div>
+            
+                <div class="col-lg-3">
+                    <h3 class="footer-title">Resources</h3>
+                <ul class="footer-links">
+                        <li><a href="#">Whitepaper</a></li>
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#">Smart Contract</a></li>
+                        <li><a href="#">Audit Report</a></li>
+                </ul>
+            </div>
+            
+                <div class="col-lg-3">
+                <h3 class="footer-title">Contact Us</h3>
+                    <ul class="footer-contact">
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:info@memefi.io">info@memefi.io</a>
+                        </li>
+                        <li>
+                            <i class="fas fa-globe"></i>
+                            <a href="https://memefi.io">www.memefi.io</a>
+                        </li>
+                    </ul>
+                </div>
+                    </div>
+            
+            <div class="footer-bottom">
+                <div class="copyright">
+                    &copy; 2023 MEMEFI. All Rights Reserved.
+                </div>
+                <div class="footer-bottom-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Web3.js -->
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.8.2/dist/web3.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script src="js/main.js"></script>
+    
+    <!-- Scroll to Top Button -->
+    <button id="scrollToTopBtn" class="scroll-to-top-btn">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+    
+    <!-- Cookie Consent Banner -->
+    <div id="cookieConsent" class="cookie-consent">
+        <div class="cookie-content">
+            <p>We use cookies to enhance your experience. By continuing to visit this site you agree to our use of cookies.</p>
+            <div class="cookie-buttons">
+                <button id="cookieAccept" class="btn-cookie accept">Accept</button>
+                <button id="cookieDecline" class="btn-cookie decline">Decline</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

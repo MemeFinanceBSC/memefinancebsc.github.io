@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="200" height="60" viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- MEMEFI Logo -->
+  <rect width="200" height="60" rx="10" fill="#000000"/>
+  <path d="M20 15H25L30 30L35 15H40L45 30L50 15H55L47.5 45H42.5L37.5 30L32.5 45H27.5L20 15Z" fill="#F0B90B"/>
+  <path d="M60 15H80V20H70V27.5H77.5V32.5H70V40H80V45H60V15Z" fill="#F0B90B"/>
+  <path d="M85 15H105V20H95V27.5H102.5V32.5H95V40H105V45H85V15Z" fill="#F0B90B"/>
+  <path d="M110 15H130V20H120V27.5H127.5V32.5H120V40H130V45H110V15Z" fill="#F0B90B"/>
+  <path d="M135 15H140V40H150V45H135V15Z" fill="#F0B90B"/>
+  
+  <!-- Coin Symbol -->
+  <circle cx="170" cy="30" r="15" fill="#F0B90B"/>
+  <path d="M170 20L165 25H175L170 20Z" fill="#000000"/>
+  <path d="M170 40L165 35H175L170 40Z" fill="#000000"/>
+  <path d="M160 30L165 25V35L160 30Z" fill="#000000"/>
+  <path d="M180 30L175 25V35L180 30Z" fill="#000000"/>
+  <circle cx="170" cy="30" r="5" fill="#000000"/>
+</svg> 
