@@ -1144,9 +1144,26 @@ document.addEventListener('DOMContentLoaded', function() {
 function initRoadmapAnimations() {
     const roadmapIllustration = document.querySelector('.roadmap-illustration');
     if (roadmapIllustration) {
-        roadmapIllustration.style.opacity = '0';
-        roadmapIllustration.style.transform = 'translateY(30px) scale(0.95)';
-        roadmapIllustration.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+        // Make sure the roadmap is visible by default
+        roadmapIllustration.classList.add('visible');
+        
+        // Add scroll event listener to ensure visibility
+        window.addEventListener('scroll', () => {
+            const rect = roadmapIllustration.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+            
+            if (rect.top < windowHeight * 0.8) {
+                roadmapIllustration.classList.add('visible');
+            }
+        });
+        
+        // Also make roadmap phases visible
+        const roadmapPhases = document.querySelectorAll('.roadmap-phase');
+        if (roadmapPhases.length > 0) {
+            roadmapPhases.forEach(phase => {
+                phase.classList.add('visible');
+            });
+        }
     }
 }
 

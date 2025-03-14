@@ -186,6 +186,16 @@ section {
   align-items: center;
 }
 
+/* Custom styling for navbar-toggler */
+.navbar-toggler {
+  border-color: var(--binance-yellow) !important;
+  color: var(--binance-yellow) !important;
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(240, 185, 11, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+}
+
 .logo-img {
   height: 4.5rem;
   width: auto;
@@ -1318,8 +1328,8 @@ section {
 
 .roadmap-illustration {
   margin-bottom: 3rem;
-  opacity: 0;
-  transform: translateY(30px);
+  opacity: 1; /* Changed from 0 to 1 to ensure visibility */
+  transform: translateY(0); /* Changed to ensure visibility */
   transition: all 0.8s ease;
 }
 
@@ -1349,8 +1359,8 @@ section {
   margin-bottom: 3rem;
   position: relative;
   padding-left: 2rem;
-  opacity: 0;
-  transform: translateX(30px);
+  opacity: 1; /* Changed from 0 to 1 to ensure visibility */
+  transform: translateX(0); /* Changed to ensure visibility */
   transition: all 0.5s ease;
 }
 
@@ -1663,27 +1673,56 @@ section {
 
 @media (max-width: 991px) {
   html {
-    font-size: 50%; /* 8px = 1rem */
+    font-size: 56.25%; /* 9px = 1rem */
   }
   
   .hero-title {
-    font-size: 4.5rem;
+    font-size: 4.2rem;
   }
   
   .hero-subtitle {
-    max-width: 100%;
+    font-size: 1.8rem;
   }
   
   .hero-image {
-    margin-top: 4rem;
+    max-width: 90%;
   }
   
   .roadmap-illustration {
-    margin-bottom: 4rem;
+    margin-bottom: 2rem;
   }
   
   .phase-number {
     font-size: 3rem;
+  }
+  
+  /* Improved mobile menu styling */
+  #navbarNav {
+    background-color: rgba(30, 32, 38, 0.95);
+    padding: 1.5rem;
+    border-radius: 0.8rem;
+    margin-top: 1rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+  }
+  
+  .navbar-nav {
+    padding: 1rem 0;
+  }
+  
+  .nav-item {
+    margin: 0.8rem 0;
+  }
+  
+  .nav-link {
+    padding: 0.8rem 1.5rem !important;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+  }
+  
+  .nav-link:hover {
+    background-color: rgba(240, 185, 11, 0.1);
+    transform: translateX(5px);
   }
 }
 
