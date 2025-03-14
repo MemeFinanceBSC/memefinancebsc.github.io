@@ -237,18 +237,45 @@ section {
 .btn-connect {
   background-color: var(--binance-yellow);
   color: var(--binance-black);
-  font-weight: 600;
-  padding: 1rem 2rem;
-  border-radius: 5px;
-  font-size: 1.4rem;
-  transition: all 0.3s ease;
   border: none;
+  border-radius: 30px;
+  padding: 0.8rem 1.5rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
 }
 
 .btn-connect:hover {
   background-color: var(--binance-dark-yellow);
-  color: var(--binance-black);
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.wallet-connect-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-icon-disconnect {
+  background-color: transparent;
+  color: #e74c3c;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  padding: 0;
+  font-size: 1.4rem;
+}
+
+.btn-icon-disconnect:hover {
+  background-color: #e74c3c;
+  color: white;
   transform: translateY(-2px);
+  box-shadow: 0 3px 8px rgba(231, 76, 60, 0.3);
 }
 
 /* Hero Section */
@@ -738,12 +765,32 @@ section {
   margin-bottom: 0.5rem;
 }
 
+/* Wallet Address */
 .wallet-address-container {
   display: flex;
   align-items: center;
   justify-content: center;
   margin-top: 0.5rem;
   margin-bottom: 1rem;
+}
+
+.wallet-address {
+  font-family: var(--font-heading);
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--binance-yellow);
+  background-color: rgba(240, 185, 11, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  display: inline-block;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(240, 185, 11, 0.3);
+}
+
+.wallet-address:hover {
+  background-color: rgba(240, 185, 11, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .btn-disconnect {
@@ -2255,15 +2302,32 @@ body.loaded .loader-wrapper {
   font-size: 1.6rem;
   font-weight: 600;
   margin-bottom: 1rem;
+  color: var(--binance-black);
 }
 
 .referrer-container input {
   width: 100%;
   padding: 1.2rem;
-  font-size: 1.4rem;
-  border: 1px solid #e0e0e0;
+  font-size: 1.5rem;
+  font-family: var(--font-heading);
+  border: 1px solid rgba(240, 185, 11, 0.3);
   border-radius: 5px;
   margin-bottom: 1rem;
+  background-color: rgba(240, 185, 11, 0.05);
+  color: var(--binance-black);
+  transition: all 0.3s ease;
+}
+
+.referrer-container input:focus {
+  outline: none;
+  border-color: var(--binance-yellow);
+  box-shadow: 0 0 0 2px rgba(240, 185, 11, 0.2);
+  background-color: rgba(240, 185, 11, 0.1);
+}
+
+.referrer-container input::placeholder {
+  color: rgba(30, 32, 38, 0.5);
+  font-family: var(--font-heading);
 }
 
 .referrer-info {
@@ -2278,6 +2342,39 @@ body.loaded .loader-wrapper {
   color: var(--binance-yellow);
   font-size: 1.6rem;
   margin-top: 0.2rem;
+}
+
+/* Auto-filled indicator for referrer address */
+.auto-filled-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 1.3rem;
+  color: #4CAF50;
+  margin-bottom: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: rgba(76, 175, 80, 0.1);
+  border-radius: 5px;
+  border-left: 3px solid #4CAF50;
+}
+
+.auto-filled-indicator i {
+  font-size: 1.6rem;
+}
+
+/* Binance styled input */
+.binance-styled-input {
+  font-family: var(--font-heading) !important;
+  color: var(--binance-yellow) !important;
+  background-color: rgba(240, 185, 11, 0.1) !important;
+  border-color: rgba(240, 185, 11, 0.3) !important;
+  font-weight: 600 !important;
+}
+
+.binance-styled-input:focus {
+  border-color: var(--binance-yellow) !important;
+  box-shadow: 0 0 0 2px rgba(240, 185, 11, 0.2) !important;
+  background-color: rgba(240, 185, 11, 0.15) !important;
 }
 
 /* Policy Pages (Privacy Policy & Terms of Service) */

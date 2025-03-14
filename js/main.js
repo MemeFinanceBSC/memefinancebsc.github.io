@@ -53,6 +53,22 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (referrer && web3 && web3.utils.isAddress(referrer)) {
             referrerAddressInput.value = referrer;
+            
+            // Apply styling to match website theme
+            referrerAddressInput.classList.add('binance-styled-input');
+            
+            // Add a small visual indicator that this was auto-filled
+            const referrerContainer = referrerAddressInput.closest('.referrer-container');
+            if (referrerContainer) {
+                const autoFilledIndicator = document.createElement('div');
+                autoFilledIndicator.className = 'auto-filled-indicator';
+                autoFilledIndicator.innerHTML = '<i class="fas fa-check-circle"></i> Referrer address auto-filled';
+                
+                // Only add if it doesn't exist yet
+                if (!referrerContainer.querySelector('.auto-filled-indicator')) {
+                    referrerContainer.insertBefore(autoFilledIndicator, referrerContainer.querySelector('.referrer-info'));
+                }
+            }
         }
     }
     
@@ -240,11 +256,12 @@ document.addEventListener('DOMContentLoaded', function() {
             walletStatusText.textContent = "Wallet Connected";
             walletStatusText.style.color = "#4CAF50";
             walletAddress.textContent = shortAddress;
+            walletAddress.style.display = "inline-block";
             connectWalletBtn.textContent = shortAddress;
             
             // Show disconnect button
             if (disconnectWalletBtn) {
-                disconnectWalletBtn.style.display = 'inline-block';
+                disconnectWalletBtn.style.display = 'inline-flex';
             }
             
             // Update referral count display
@@ -262,6 +279,7 @@ document.addEventListener('DOMContentLoaded', function() {
             walletStatusText.textContent = "Wallet not connected";
             walletStatusText.style.color = "";
             walletAddress.textContent = "";
+            walletAddress.style.display = "none";
             referralCountElement.textContent = "";
             connectWalletBtn.textContent = "Connect Wallet";
             
@@ -837,6 +855,47 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialize IDO section
     initIdoSection();
+    
+    // Disconnect wallet
+    function disconnectWallet() {
+        console.log("Disconnect wallet button clicked");
+        
+        try {
+            // Reset wallet connection state
+            isWalletConnected = false;
+            accounts = [];
+            
+            // Update UI
+            updateWalletStatus();
+            
+            // Show notification
+            showNotification('Info', 'Wallet disconnected successfully.', 'info');
+            
+            // Remove event listeners for provider events
+            if (window.ethereum) {
+                let provider;
+                if (window.ethereum.providers) {
+                    provider = window.ethereum.providers.find(p => p.isMetaMask) || window.ethereum;
+                } else {
+                    provider = window.ethereum;
+                }
+                
+                if (provider) {
+                    // Remove event listeners
+                    provider.removeListener('accountsChanged', null);
+                    provider.removeListener('chainChanged', null);
+                    console.log("Removed provider event listeners");
+                }
+            }
+            
+            // Note: There's no standard way to disconnect a wallet in Web3.js
+            // This function simply resets the local state
+            // The user would need to disconnect from their wallet extension manually for a complete disconnect
+        } catch (error) {
+            console.error("Error disconnecting wallet:", error);
+            showNotification('Error', 'Error disconnecting wallet. Please try again.', 'error');
+        }
+    }
 });
 
 // Initialize roadmap animations
@@ -1147,23 +1206,4 @@ function initIdoSection() {
         idoIllustration.style.transform = 'translateY(30px) scale(0.95)';
         idoIllustration.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
     }
-}
-
-// Disconnect wallet
-async function disconnectWallet() {
-    console.log("Disconnect wallet button clicked");
-    
-    // Reset wallet connection state
-    isWalletConnected = false;
-    accounts = [];
-    
-    // Update UI
-    updateWalletStatus();
-    
-    // Show notification
-    showNotification('Info', 'Wallet disconnected successfully.', 'info');
-    
-    // Note: There's no standard way to disconnect a wallet in Web3.js
-    // This function simply resets the local state
-    // The user would need to disconnect from their wallet extension manually for a complete disconnect
 } 

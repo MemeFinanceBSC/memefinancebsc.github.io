@@ -59,7 +59,12 @@
                             <a href="#roadmap" class="nav-link">Roadmap</a>
                         </li>
                         <li class="nav-item">
-                            <button id="connectWalletBtn" class="btn btn-connect">Connect Wallet</button>
+                            <div class="wallet-connect-container">
+                                <button id="connectWalletBtn" class="btn btn-connect">Connect Wallet</button>
+                                <button id="disconnectWalletBtn" class="btn btn-icon-disconnect" style="display: none;">
+                                    <i class="fas fa-unlink"></i>
+                                </button>
+                            </div>
                         </li>
                     </ul>
                 </div>
@@ -200,9 +205,6 @@
                                         <div id="walletAddress" class="wallet-address"></div>
                                         <div id="referralCount" class="referral-count"></div>
                                     </div>
-                                    <button id="disconnectWalletBtn" class="btn btn-disconnect" style="display: none;">
-                                        <i class="fas fa-unlink"></i> Disconnect
-                                    </button>
                                 </div>
                                 
                                 <div class="referrer-container">
@@ -603,10 +605,6 @@
                 <div class="col-lg-3">
                 <h3 class="footer-title">Contact Us</h3>
                     <ul class="footer-contact-list">
-                        <li>
-                            <i class="fas fa-envelope"></i>
-                            <a href="mailto:info@memefi.io">info@memefi.io</a>
-                        </li>
                         <li>
                             <i class="fas fa-file-alt"></i>
                             <a href="https://memefi-sorganization.gitbook.io/doc.memefi" target="_blank">Whitepaper</a>
