@@ -738,10 +738,78 @@ section {
   margin-bottom: 0.5rem;
 }
 
-.wallet-address {
+.wallet-address-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.btn-disconnect {
+  background-color: transparent;
+  color: #e74c3c;
+  border: 1px solid #e74c3c;
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
   font-size: 1.4rem;
-  color: var(--binance-gray);
-  word-break: break-all;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+}
+
+.btn-disconnect:hover {
+  background-color: #e74c3c;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.btn-disconnect i {
+  margin-right: 0.5rem;
+}
+
+.referral-count {
+  background-color: var(--binance-yellow);
+  color: var(--binance-black);
+  font-size: 1.4rem;
+  font-weight: bold;
+  padding: 0.3rem 0.8rem;
+  border-radius: 12px;
+  margin-left: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  min-width: 2.5rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.referral-count.updated {
+  animation: bounce 0.5s ease;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.referral-count:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.referral-count::before {
+  content: 'Referrals: ';
+  font-size: 1.2rem;
+  margin-right: 0.3rem;
+}
+
+.referral-count:empty {
+  display: none;
 }
 
 /* Share Buttons */
@@ -910,6 +978,16 @@ section {
   .target-amount {
     font-size: 3.5rem;
   }
+  
+  .wallet-address-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .referral-count {
+    margin-left: 0;
+    margin-top: 0.5rem;
+  }
 }
 
 @media (max-width: 767px) {
@@ -930,6 +1008,18 @@ section {
   
   .benefit-icon i {
     font-size: 1.8rem;
+  }
+  
+  .wallet-address {
+    font-size: 1.4rem;
+  }
+  
+  .referral-count {
+    font-size: 1.2rem;
+  }
+  
+  .referral-count::before {
+    font-size: 1rem;
   }
 }
 
@@ -2188,4 +2278,133 @@ body.loaded .loader-wrapper {
   color: var(--binance-yellow);
   font-size: 1.6rem;
   margin-top: 0.2rem;
+}
+
+/* Policy Pages (Privacy Policy & Terms of Service) */
+.policy-section {
+  padding: 12rem 0 8rem;
+  background-color: var(--binance-white);
+}
+
+.policy-content {
+  margin-top: 4rem;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.policy-block {
+  margin-bottom: 4rem;
+}
+
+.policy-block h3 {
+  font-size: 2.4rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: var(--binance-black);
+  position: relative;
+  padding-bottom: 1rem;
+}
+
+.policy-block h3::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 50px;
+  height: 3px;
+  background-color: var(--binance-yellow);
+}
+
+.policy-block p {
+  font-size: 1.6rem;
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
+
+.policy-block ul {
+  padding-left: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.policy-block li {
+  font-size: 1.6rem;
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+
+.policy-block strong {
+  font-weight: 600;
+  color: var(--binance-black);
+}
+
+.risk-list li {
+  padding-left: 0.5rem;
+}
+
+.risk-warning {
+  background-color: rgba(240, 185, 11, 0.1);
+  border-left: 4px solid var(--binance-yellow);
+  padding: 2rem;
+  border-radius: 5px;
+  margin-bottom: 4rem;
+}
+
+.risk-warning h3 {
+  color: #e74c3c;
+  font-weight: 700;
+}
+
+.risk-warning-content {
+  font-size: 1.6rem;
+}
+
+.risk-warning-content p {
+  margin-bottom: 1.5rem;
+}
+
+.risk-warning-content strong {
+  color: #e74c3c;
+}
+
+@media (max-width: 767px) {
+  .policy-section {
+    padding: 10rem 0 6rem;
+  }
+  
+  .policy-block h3 {
+    font-size: 2rem;
+  }
+  
+  .policy-block p, 
+  .policy-block li,
+  .risk-warning-content {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 575px) {
+  .policy-section {
+    padding: 8rem 0 4rem;
+  }
+  
+  .policy-block h3 {
+    font-size: 1.8rem;
+  }
+  
+  .policy-block p, 
+  .policy-block li,
+  .risk-warning-content {
+    font-size: 1.4rem;
+  }
+}
+
+.wallet-address {
+  font-family: monospace;
+  font-size: 1.6rem;
+  color: var(--binance-black);
+  background-color: rgba(240, 185, 11, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  display: inline-block;
 } 

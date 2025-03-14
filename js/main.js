@@ -13,8 +13,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Cache DOM elements
     const header = document.querySelector('.header');
     const connectWalletBtn = document.getElementById('connectWalletBtn');
+    const disconnectWalletBtn = document.getElementById('disconnectWalletBtn');
     const walletStatusText = document.getElementById('walletStatusText');
     const walletAddress = document.getElementById('walletAddress');
+    const referralCountElement = document.getElementById('referralCount');
     const referrerAddressInput = document.getElementById('referrerAddress');
     const shareButtons = document.querySelectorAll('.share-button');
     const selectedSharesElement = document.getElementById('selectedShares');
@@ -39,6 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let selectedShares = 0;
     let currentRaised = 0; // Mock data, would be fetched from contract
     let isWalletConnected = false;
+    let referralCount = 0; // Track number of referrals
     
     // Page load effect
     document.body.classList.add('loaded');
@@ -239,6 +242,14 @@ document.addEventListener('DOMContentLoaded', function() {
             walletAddress.textContent = shortAddress;
             connectWalletBtn.textContent = shortAddress;
             
+            // Show disconnect button
+            if (disconnectWalletBtn) {
+                disconnectWalletBtn.style.display = 'inline-block';
+            }
+            
+            // Update referral count display
+            updateReferralCount(address);
+            
             // Enable mint button if shares are selected
             if (selectedShares > 0) {
                 mintButton.disabled = false;
@@ -251,11 +262,67 @@ document.addEventListener('DOMContentLoaded', function() {
             walletStatusText.textContent = "Wallet not connected";
             walletStatusText.style.color = "";
             walletAddress.textContent = "";
+            referralCountElement.textContent = "";
             connectWalletBtn.textContent = "Connect Wallet";
+            
+            // Hide disconnect button
+            if (disconnectWalletBtn) {
+                disconnectWalletBtn.style.display = 'none';
+            }
+            
             mintButton.disabled = true;
             mintButton.classList.remove('active');
             console.log("Mint button disabled - wallet not connected");
         }
+    }
+    
+    // Fetch and update referral count
+    function updateReferralCount(address) {
+        // In a real implementation, this would fetch data from the smart contract
+        // For demo purposes, we'll generate a random number between 0 and 20
+        
+        // Simulate API call delay
+        setTimeout(() => {
+            // Use the last 4 digits of the address to generate a consistent "random" number for demo
+            const addressEnd = address.substring(address.length - 4);
+            const addressNum = parseInt(addressEnd, 16);
+            referralCount = addressNum % 21; // 0-20 range
+            
+            // Update UI
+            if (referralCount > 0) {
+                referralCountElement.textContent = referralCount;
+                referralCountElement.style.display = 'inline-flex';
+                
+                // Add tooltip with more information
+                referralCountElement.title = `You have referred ${referralCount} users. Each referral earns you 5% bonus tokens!`;
+            } else {
+                referralCountElement.textContent = '0';
+                referralCountElement.style.display = 'inline-flex';
+                
+                // Add tooltip with more information
+                referralCountElement.title = 'Generate a referral link and share it to start earning bonus tokens!';
+            }
+            
+            // Add click handler to show notification with referral info
+            if (!referralCountElement.hasClickListener) {
+                referralCountElement.addEventListener('click', function() {
+                    if (referralCount > 0) {
+                        showNotification('Referral Bonus', `You have earned ${referralCount * 5}% bonus tokens from your referrals!`, 'success');
+                    } else {
+                        showNotification('No Referrals Yet', 'Generate a referral link and share it to start earning bonus tokens!', 'info');
+                    }
+                });
+                referralCountElement.hasClickListener = true;
+            }
+            
+            // Add animation
+            referralCountElement.classList.add('updated');
+            setTimeout(() => {
+                referralCountElement.classList.remove('updated');
+            }, 500);
+            
+            console.log("Updated referral count:", referralCount);
+        }, 500);
     }
     
     // Update share selection
@@ -443,6 +510,24 @@ document.addEventListener('DOMContentLoaded', function() {
                         generateReferralBtn.classList.remove('copied');
                     }, 2000);
                 }
+                
+                // For demo purposes, increment the referral count when a link is generated
+                // In a real implementation, this would be tracked by the smart contract
+                if (isWalletConnected && accounts.length > 0) {
+                    // Update UI with new count
+                    referralCountElement.textContent = ++referralCount;
+                    
+                    // Update tooltip
+                    referralCountElement.title = `You have referred ${referralCount} users. Each referral earns you 5% bonus tokens!`;
+                    
+                    // Add animation
+                    referralCountElement.classList.add('updated');
+                    setTimeout(() => {
+                        referralCountElement.classList.remove('updated');
+                    }, 500);
+                    
+                    console.log("Incremented referral count:", referralCount);
+                }
             })
             .catch(err => {
                 console.error('Could not copy text: ', err);
@@ -514,6 +599,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // Connect wallet button
     if (connectWalletBtn) {
         connectWalletBtn.addEventListener('click', connectWallet);
+    }
+    
+    // Disconnect wallet button
+    if (disconnectWalletBtn) {
+        disconnectWalletBtn.addEventListener('click', disconnectWallet);
     }
     
     // Generate referral link button
@@ -643,6 +733,20 @@ document.addEventListener('DOMContentLoaded', function() {
     updateFundraisingProgress();
     updateShareSelection();
     updateCountdown();
+
+    // Add event listeners for policy links
+    const policyLinks = document.querySelectorAll('a[href="privacy-policy.html"], a[href="terms-of-service.html"]');
+    policyLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            // Show risk warning notification
+            const notification = showNotification(
+                'Risk Warning', 
+                'MEMEFI tokens are experimental digital assets with HIGH RISK. You may lose your entire investment. Please read our policies carefully.', 
+                'info', 
+                8000
+            );
+        });
+    });
 
     // Update countdown every second
     setInterval(updateCountdown, 1000);
@@ -1020,9 +1124,9 @@ function initIdoSection() {
                 
                 setTimeout(() => {
                     glare.remove();
-                }, 1000);
-            }
-        });
+        }, 1000);
+    }
+}); 
     }
     
     // Add animation to IDO illustration
@@ -1043,4 +1147,23 @@ function initIdoSection() {
         idoIllustration.style.transform = 'translateY(30px) scale(0.95)';
         idoIllustration.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
     }
+}
+
+// Disconnect wallet
+async function disconnectWallet() {
+    console.log("Disconnect wallet button clicked");
+    
+    // Reset wallet connection state
+    isWalletConnected = false;
+    accounts = [];
+    
+    // Update UI
+    updateWalletStatus();
+    
+    // Show notification
+    showNotification('Info', 'Wallet disconnected successfully.', 'info');
+    
+    // Note: There's no standard way to disconnect a wallet in Web3.js
+    // This function simply resets the local state
+    // The user would need to disconnect from their wallet extension manually for a complete disconnect
 } 

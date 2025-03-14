@@ -196,7 +196,13 @@
                             <div class="mint-card-body">
                                 <div class="wallet-status">
                                     <div id="walletStatusText">Wallet not connected</div>
-                                    <div id="walletAddress" class="wallet-address"></div>
+                                    <div class="wallet-address-container">
+                                        <div id="walletAddress" class="wallet-address"></div>
+                                        <div id="referralCount" class="referral-count"></div>
+                                    </div>
+                                    <button id="disconnectWalletBtn" class="btn btn-disconnect" style="display: none;">
+                                        <i class="fas fa-unlink"></i> Disconnect
+                                    </button>
                                 </div>
                                 
                                 <div class="referrer-container">
@@ -588,7 +594,7 @@
                     <h3 class="footer-title">Resources</h3>
                 <ul class="footer-links">
                         <li><a href="https://memefi-sorganization.gitbook.io/doc.memefi" target="_blank">Whitepaper</a></li>
-                        <li><a href="#">Documentation</a></li>
+                        <li><a href="https://memefi-sorganization.gitbook.io/doc.memefi/market-stabilization-mechanism/operational-mechanism" target="_blank">Documentation</a></li>
                         <li><a href="https://bscscan.com/" target="_blank">Smart Contract</a></li>
                         <li><a href="https://gopluslabs.io/token-security/56/" target="_blank">Audit Report</a></li>
                 </ul>
@@ -618,8 +624,8 @@
                     &copy; 2025 MEMEFI. All Rights Reserved.
                 </div>
                 <div class="footer-bottom-links">
-                    <a href="#">Privacy Policy</a>
-                    <a href="#">Terms of Service</a>
+                    <a href="privacy-policy.html">Privacy Policy</a>
+                    <a href="terms-of-service.html">Terms of Service</a>
                 </div>
             </div>
         </div>
