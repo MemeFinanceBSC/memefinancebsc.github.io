@@ -32,6 +32,41 @@
     <!-- Notification Container -->
     <div class="notification-container" id="notificationContainer"></div>
     
+    <!-- Wallet Selection Modal -->
+    <div class="wallet-modal-overlay" id="walletModal">
+        <div class="wallet-modal">
+            <div class="wallet-modal-header">
+                <h3>Connect Wallet</h3>
+                <button class="wallet-modal-close" id="walletModalClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="wallet-modal-body">
+                <div class="wallet-options">
+                    <div class="wallet-option" data-wallet="binance">
+                        <img src="images/wallets/binance.png" alt="Binance Wallet">
+                        <div class="wallet-option-name">Binance Wallet</div>
+                    </div>
+                    <div class="wallet-option" data-wallet="okx">
+                        <img src="images/wallets/okx.png" alt="OKX Wallet">
+                        <div class="wallet-option-name">OKX Wallet</div>
+                    </div>
+                    <div class="wallet-option" data-wallet="metamask">
+                        <img src="images/wallets/metamask.png" alt="MetaMask">
+                        <div class="wallet-option-name">MetaMask</div>
+                    </div>
+                    <div class="wallet-option" data-wallet="walletconnect">
+                        <img src="images/wallets/walletconnect.png" alt="WalletConnect">
+                        <div class="wallet-option-name">WalletConnect</div>
+                    </div>
+                </div>
+            </div>
+            <div class="wallet-modal-footer">
+                <p>Connect your wallet to participate in the MEMEFI IDO</p>
+            </div>
+        </div>
+    </div>
+    
     <!-- Header -->
     <header class="header">
         <div class="container">

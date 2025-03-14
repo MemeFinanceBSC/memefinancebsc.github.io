@@ -27,6 +27,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const currentRaisedElement = document.getElementById('currentRaised');
     const fadeElements = document.querySelectorAll('.fade-in');
     
+    // Wallet Modal Elements
+    const walletModal = document.getElementById('walletModal');
+    const walletModalClose = document.getElementById('walletModalClose');
+    const walletOptions = document.querySelectorAll('.wallet-option');
+    
     // Constants
     const PRICE_PER_SHARE = 100; // 100 U per share
     const TOKENS_PER_SHARE = 9500; // 9,500 MMF tokens per share
@@ -42,6 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentRaised = 0; // Mock data, would be fetched from contract
     let isWalletConnected = false;
     let referralCount = 0; // Track number of referrals
+    let selectedWalletType = ''; // Track which wallet was selected
     
     // Page load effect
     document.body.classList.add('loaded');
@@ -131,10 +137,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Check if MetaMask is installed
     function isMetaMaskInstalled() {
         console.log("Checking for MetaMask...");
-        console.log("window.ethereum:", window.ethereum);
-        if (window.ethereum && window.ethereum.providers) {
-            console.log("Multiple providers detected:", window.ethereum.providers);
-        }
         
         // Try different detection methods
         const hasEthereum = typeof window.ethereum !== 'undefined';
@@ -147,13 +149,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const hasMetaMaskObject = typeof window.ethereum !== 'undefined' || 
                                  typeof window.web3 !== 'undefined';
         
-        console.log("Detection results:", {
-            hasEthereum,
-            hasMetaMaskFlag,
-            hasMetaMaskInProviders,
-            hasMetaMaskObject
-        });
-        
         // Combined check
         const isInstalled = hasMetaMaskFlag || hasMetaMaskInProviders || hasMetaMaskObject;
         
@@ -161,91 +156,335 @@ document.addEventListener('DOMContentLoaded', function() {
         return isInstalled;
     }
     
-    // Connect wallet
-    async function connectWallet() {
-        console.log("Connect wallet button clicked");
-        
-        // First check if MetaMask is installed
-        if (!isMetaMaskInstalled()) {
-            showNotification('Error', 'MetaMask is not installed. Please install MetaMask to connect your wallet.', 'error');
-            // Open MetaMask installation page in a new tab
-            window.open('https://metamask.io/download/', '_blank');
-            return;
+    // Show wallet selection modal
+    function showWalletModal() {
+        walletModal.classList.add('active');
+    }
+    
+    // Hide wallet selection modal
+    function hideWalletModal() {
+        walletModal.classList.remove('active');
+    }
+    
+    // Connect wallet button click handler
+    if (connectWalletBtn) {
+        connectWalletBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            connectWallet();
+        });
+    }
+    
+    // Disconnect wallet button click handler
+    if (disconnectWalletBtn) {
+        disconnectWalletBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            disconnectWallet();
+        });
+    }
+    
+    // Close wallet modal
+    if (walletModalClose) {
+        walletModalClose.addEventListener('click', hideWalletModal);
+    }
+    
+    // Click outside modal to close
+    walletModal.addEventListener('click', function(e) {
+        if (e.target === walletModal) {
+            hideWalletModal();
         }
-        
-        console.log("MetaMask is installed, attempting to connect");
-        
-        // Get the correct provider if multiple providers exist
-        let provider;
-        if (window.ethereum) {
-            if (window.ethereum.providers) {
-                provider = window.ethereum.providers.find(p => p.isMetaMask) || window.ethereum;
-                console.log("Found MetaMask provider in providers list");
-            } else {
-                provider = window.ethereum;
-                console.log("Using window.ethereum as provider");
-            }
-        } else if (window.web3 && window.web3.currentProvider) {
-            provider = window.web3.currentProvider;
-            console.log("Using window.web3.currentProvider as provider");
-        }
-        
-        if (!provider) {
-            console.error("No provider found despite MetaMask being detected");
-            showNotification('Error', 'Could not connect to MetaMask. Please refresh and try again.', 'error');
-            return;
-        }
-        
-        if (!web3) {
-            try {
-                web3 = new Web3(provider);
-                console.log("Web3 initialized with provider");
-            } catch (error) {
-                console.error("Error initializing Web3:", error);
-                showNotification('Error', 'Failed to initialize Web3. Please refresh and try again.', 'error');
-                return;
-            }
-        }
-        
-        try {
-            console.log("Requesting accounts...");
-            // Request account access
-            accounts = await provider.request({ method: 'eth_requestAccounts' });
-            console.log("Accounts received:", accounts);
+    });
+    
+    // Wallet option selection
+    walletOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            const walletType = this.getAttribute('data-wallet');
+            selectedWalletType = walletType;
             
-            if (accounts.length > 0) {
-                isWalletConnected = true;
-                updateWalletStatus();
-                checkUrlParams();
-                
-                showNotification('Success', 'Wallet connected successfully!', 'success');
-                
-                // Listen for account changes
-                provider.on('accountsChanged', function (newAccounts) {
-                    console.log("Accounts changed:", newAccounts);
-                    accounts = newAccounts;
-                    if (accounts.length === 0) {
-                        isWalletConnected = false;
-                        showNotification('Info', 'Wallet disconnected.', 'info');
-                    } else {
-                        showNotification('Info', 'Account changed.', 'info');
-                    }
-                    updateWalletStatus();
-                });
-                
-                // Listen for chain changes
-                provider.on('chainChanged', function () {
-                    showNotification('Info', 'Network changed. Reloading...', 'info');
-                    window.location.reload();
-                });
-            }
-        } catch (error) {
-            console.error("Error connecting wallet:", error);
-            showNotification('Error', 'Error connecting wallet. Please try again.', 'error');
+            // Hide modal
+            hideWalletModal();
+            
+            // Connect to selected wallet
+            connectToWallet(walletType);
+        });
+    });
+    
+    // Connect to selected wallet
+    async function connectToWallet(walletType) {
+        console.log(`Connecting to ${walletType} wallet...`);
+        
+        switch (walletType) {
+            case 'metamask':
+                await connectMetaMask();
+                break;
+            case 'okx':
+                await connectOKXWallet();
+                break;
+            case 'binance':
+                await connectBinanceWallet();
+                break;
+            case 'walletconnect':
+                await connectWalletConnect();
+                break;
+            default:
+                showNotification('Error', 'Invalid wallet type selected.', 'error');
+                break;
         }
     }
     
-    // Update wallet status display
+    // Connect to MetaMask wallet
+    async function connectMetaMask() {
+        if (!isMetaMaskInstalled()) {
+            showNotification(
+                'Wallet Not Detected', 
+                'MetaMask is not installed. Please install MetaMask to continue.', 
+                'error'
+            );
+            return false;
+        }
+
+        try {
+            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            
+            if (accounts.length === 0) {
+                showNotification(
+                    'Connection Failed', 
+                    'No accounts found. Please create an account in MetaMask and try again.', 
+                    'error'
+                );
+                return false;
+            }
+
+            // Check if connected to BSC network
+            const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+            if (chainId !== '0x38') { // BSC Mainnet
+                try {
+                    await window.ethereum.request({
+                        method: 'wallet_switchEthereumChain',
+                        params: [{ chainId: '0x38' }], // BSC Mainnet
+                    });
+                } catch (switchError) {
+                    // This error code indicates that the chain has not been added to MetaMask
+                    if (switchError.code === 4902) {
+                        try {
+                            await window.ethereum.request({
+                                method: 'wallet_addEthereumChain',
+                                params: [{
+                                    chainId: '0x38',
+                                    chainName: 'Binance Smart Chain',
+                                    nativeCurrency: {
+                                        name: 'BNB',
+                                        symbol: 'BNB',
+                                        decimals: 18
+                                    },
+                                    rpcUrls: ['https://bsc-dataseed.binance.org/'],
+                                    blockExplorerUrls: ['https://bscscan.com/']
+                                }]
+                            });
+                        } catch (addError) {
+                            showNotification(
+                                'Network Error', 
+                                'Failed to add BSC network to MetaMask. Please add it manually.', 
+                                'error'
+                            );
+                            return false;
+                        }
+                    } else {
+                        showNotification(
+                            'Network Error', 
+                            'Please switch to Binance Smart Chain network in your wallet.', 
+                            'error'
+                        );
+                        return false;
+                    }
+                }
+            }
+
+            // Set the selected wallet type
+            selectedWalletType = 'metamask';
+            
+            showNotification(
+                'Wallet Connected', 
+                'MetaMask wallet connected successfully!', 
+                'success'
+            );
+            return true;
+        } catch (error) {
+            console.error('MetaMask connection error:', error);
+            showNotification(
+                'Connection Failed', 
+                'Failed to connect to MetaMask. Please try again.', 
+                'error'
+            );
+            return false;
+        }
+    }
+    
+    // Connect to OKX wallet
+    async function connectOKXWallet() {
+        if (typeof window.okxwallet === 'undefined') {
+            showNotification(
+                'Wallet Not Detected', 
+                'OKX Wallet is not installed. Please install OKX Wallet to continue.', 
+                'error'
+            );
+            return false;
+        }
+
+        try {
+            const accounts = await window.okxwallet.request({ method: 'eth_requestAccounts' });
+            
+            if (accounts.length === 0) {
+                showNotification(
+                    'Connection Failed', 
+                    'No accounts found. Please create an account in OKX Wallet and try again.', 
+                    'error'
+                );
+                return false;
+            }
+
+            // Check if connected to BSC network
+            const chainId = await window.okxwallet.request({ method: 'eth_chainId' });
+            if (chainId !== '0x38') { // BSC Mainnet
+                try {
+                    await window.okxwallet.request({
+                        method: 'wallet_switchEthereumChain',
+                        params: [{ chainId: '0x38' }], // BSC Mainnet
+                    });
+                } catch (switchError) {
+                    showNotification(
+                        'Network Error', 
+                        'Please switch to Binance Smart Chain network in your wallet.', 
+                        'error'
+                    );
+                    return false;
+                }
+            }
+
+            // Set the selected wallet type
+            selectedWalletType = 'okx';
+            
+            showNotification(
+                'Wallet Connected', 
+                'OKX Wallet connected successfully!', 
+                'success'
+            );
+            return true;
+        } catch (error) {
+            console.error('OKX Wallet connection error:', error);
+            showNotification(
+                'Connection Failed', 
+                'Failed to connect to OKX Wallet. Please try again.', 
+                'error'
+            );
+            return false;
+        }
+    }
+    
+    // Connect to Binance wallet
+    async function connectBinanceWallet() {
+        if (typeof window.BinanceChain === 'undefined') {
+            showNotification(
+                'Wallet Not Detected', 
+                'Binance Wallet is not installed. Please install Binance Wallet to continue.', 
+                'error'
+            );
+            return false;
+        }
+
+        try {
+            const accounts = await window.BinanceChain.request({ method: 'eth_requestAccounts' });
+            
+            if (accounts.length === 0) {
+                showNotification(
+                    'Connection Failed', 
+                    'No accounts found. Please create an account in Binance Wallet and try again.', 
+                    'error'
+                );
+                return false;
+            }
+
+            // Check if connected to BSC network
+            const chainId = await window.BinanceChain.request({ method: 'eth_chainId' });
+            if (chainId !== '0x38') { // BSC Mainnet
+                showNotification(
+                    'Network Error', 
+                    'Please switch to Binance Smart Chain network in your wallet.', 
+                    'error'
+                );
+                return false;
+            }
+
+            // Set the selected wallet type
+            selectedWalletType = 'binance';
+            
+            showNotification(
+                'Wallet Connected', 
+                'Binance Wallet connected successfully!', 
+                'success'
+            );
+            return true;
+        } catch (error) {
+            console.error('Binance Wallet connection error:', error);
+            showNotification(
+                'Connection Failed', 
+                'Failed to connect to Binance Wallet. Please try again.', 
+                'error'
+            );
+            return false;
+        }
+    }
+    
+    // Connect using WalletConnect
+    async function connectWalletConnect() {
+        try {
+            // Initialize WalletConnect provider
+            const provider = new WalletConnectProvider.default({
+                rpc: {
+                    56: "https://bsc-dataseed.binance.org/"
+                },
+                chainId: 56,
+                bridge: "https://bridge.walletconnect.org",
+            });
+            
+            // Enable session (triggers QR Code modal)
+            await provider.enable();
+            
+            // Get accounts
+            const accounts = provider.accounts;
+            
+            if (accounts.length === 0) {
+                showNotification(
+                    'Connection Failed', 
+                    'No accounts found. Please try again.', 
+                    'error'
+                );
+                return false;
+            }
+            
+            // Set the selected wallet type
+            selectedWalletType = 'walletconnect';
+            
+            // Store provider for later use
+            walletConnectProvider = provider;
+            
+            showNotification(
+                'Wallet Connected', 
+                'WalletConnect connected successfully!', 
+                'success'
+            );
+            return true;
+        } catch (error) {
+            console.error('WalletConnect error:', error);
+            showNotification(
+                'Connection Failed', 
+                'Failed to connect with WalletConnect. Please try again.', 
+                'error'
+            );
+            return false;
+        }
+    }
+    
+    // Update wallet status display with wallet type
     function updateWalletStatus() {
         console.log("Updating wallet status. Connected:", isWalletConnected, "Accounts:", accounts);
         
@@ -257,7 +496,27 @@ document.addEventListener('DOMContentLoaded', function() {
             walletStatusText.style.color = "#4CAF50";
             walletAddress.textContent = shortAddress;
             walletAddress.style.display = "inline-block";
-            connectWalletBtn.textContent = shortAddress;
+            
+            // Update connect button text with wallet type and address
+            let walletName = "";
+            switch (selectedWalletType) {
+                case 'metamask':
+                    walletName = "MetaMask";
+                    break;
+                case 'okx':
+                    walletName = "OKX";
+                    break;
+                case 'binance':
+                    walletName = "Binance";
+                    break;
+                case 'walletconnect':
+                    walletName = "WalletConnect";
+                    break;
+                default:
+                    walletName = "";
+            }
+            
+            connectWalletBtn.textContent = walletName ? `${walletName}: ${shortAddress}` : shortAddress;
             
             // Show disconnect button
             if (disconnectWalletBtn) {
@@ -282,6 +541,7 @@ document.addEventListener('DOMContentLoaded', function() {
             walletAddress.style.display = "none";
             referralCountElement.textContent = "";
             connectWalletBtn.textContent = "Connect Wallet";
+            selectedWalletType = "";
             
             // Hide disconnect button
             if (disconnectWalletBtn) {
@@ -614,16 +874,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Event Listeners
     
-    // Connect wallet button
-    if (connectWalletBtn) {
-        connectWalletBtn.addEventListener('click', connectWallet);
-    }
-    
-    // Disconnect wallet button
-    if (disconnectWalletBtn) {
-        disconnectWalletBtn.addEventListener('click', disconnectWallet);
-    }
-    
     // Generate referral link button
     const generateReferralBtn = document.getElementById('generateReferralBtn');
     if (generateReferralBtn) {
@@ -858,8 +1108,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Disconnect wallet
     function disconnectWallet() {
-        console.log("Disconnect wallet button clicked");
-        
         try {
             // Reset wallet connection state
             isWalletConnected = false;
@@ -868,76 +1116,37 @@ document.addEventListener('DOMContentLoaded', function() {
             // Update UI
             updateWalletStatus();
             
-            // Show notification
-            showNotification('Info', 'Wallet disconnected successfully.', 'info');
+            showNotification(
+                'Wallet Disconnected', 
+                'Your wallet has been disconnected successfully.', 
+                'info'
+            );
             
-            // Remove event listeners for provider events
-            if (window.ethereum) {
-                let provider;
-                if (window.ethereum.providers) {
-                    provider = window.ethereum.providers.find(p => p.isMetaMask) || window.ethereum;
-                } else {
-                    provider = window.ethereum;
-                }
-                
-                if (provider) {
-                    // Remove event listeners
-                    provider.removeListener('accountsChanged', null);
-                    provider.removeListener('chainChanged', null);
-                    console.log("Removed provider event listeners");
-                }
-            }
-            
-            // Note: There's no standard way to disconnect a wallet in Web3.js
-            // This function simply resets the local state
-            // The user would need to disconnect from their wallet extension manually for a complete disconnect
+            console.log('Wallet disconnected successfully');
         } catch (error) {
-            console.error("Error disconnecting wallet:", error);
-            showNotification('Error', 'Error disconnecting wallet. Please try again.', 'error');
+            console.error('Error disconnecting wallet:', error);
+            showNotification(
+                'Disconnect Error', 
+                'There was an error disconnecting your wallet. Please try again.', 
+                'error'
+            );
         }
+    }
+
+    // Connect wallet function
+    function connectWallet() {
+        // Show wallet selection modal instead of directly connecting
+        showWalletModal();
     }
 });
 
 // Initialize roadmap animations
 function initRoadmapAnimations() {
     const roadmapIllustration = document.querySelector('.roadmap-illustration');
-    const roadmapPhases = document.querySelectorAll('.roadmap-phase');
-    
-    // Create observer for fade-in elements
-    if ('IntersectionObserver' in window) {
-        const fadeObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    fadeObserver.unobserve(entry.target);
-                }
-            });
-        }, {
-            threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
-        });
-        
-        // Observe roadmap elements
-        if (roadmapIllustration) {
-            fadeObserver.observe(roadmapIllustration);
-        }
-        
-        if (roadmapPhases.length > 0) {
-            roadmapPhases.forEach(phase => {
-                fadeObserver.observe(phase);
-            });
-        }
-    } else {
-        // Fallback for browsers that don't support Intersection Observer
-        if (roadmapIllustration) {
-            roadmapIllustration.classList.add('visible');
-        }
-        
-        if (roadmapPhases.length > 0) {
-            roadmapPhases.forEach(phase => {
-                phase.classList.add('visible');
-            });
-        }
+    if (roadmapIllustration) {
+        roadmapIllustration.style.opacity = '0';
+        roadmapIllustration.style.transform = 'translateY(30px) scale(0.95)';
+        roadmapIllustration.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
     }
 }
 
@@ -1183,9 +1392,9 @@ function initIdoSection() {
                 
                 setTimeout(() => {
                     glare.remove();
-        }, 1000);
-    }
-}); 
+                }, 1000);
+            }
+        });
     }
     
     // Add animation to IDO illustration
@@ -1206,4 +1415,19 @@ function initIdoSection() {
         idoIllustration.style.transform = 'translateY(30px) scale(0.95)';
         idoIllustration.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
     }
-} 
+}
+
+// Initialize the page
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize functions
+    initWeb3();
+    updateShareSelection();
+    updateFundraisingProgress();
+    initRoadmapAnimations();
+    updateCryptoPrices();
+    initCookieConsent();
+    initIdoSection();
+    
+    // Check for URL parameters
+    checkUrlParams();
+}); 
