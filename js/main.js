@@ -109,18 +109,90 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
+    // Check if MetaMask is installed
+    function isMetaMaskInstalled() {
+        console.log("Checking for MetaMask...");
+        console.log("window.ethereum:", window.ethereum);
+        if (window.ethereum && window.ethereum.providers) {
+            console.log("Multiple providers detected:", window.ethereum.providers);
+        }
+        
+        // Try different detection methods
+        const hasEthereum = typeof window.ethereum !== 'undefined';
+        const hasMetaMaskFlag = hasEthereum && window.ethereum.isMetaMask;
+        const hasMetaMaskInProviders = hasEthereum && 
+                                      window.ethereum.providers && 
+                                      window.ethereum.providers.some(provider => provider.isMetaMask);
+        
+        // Check for MetaMask in a different way - sometimes the browser extension API is available
+        const hasMetaMaskObject = typeof window.ethereum !== 'undefined' || 
+                                 typeof window.web3 !== 'undefined';
+        
+        console.log("Detection results:", {
+            hasEthereum,
+            hasMetaMaskFlag,
+            hasMetaMaskInProviders,
+            hasMetaMaskObject
+        });
+        
+        // Combined check
+        const isInstalled = hasMetaMaskFlag || hasMetaMaskInProviders || hasMetaMaskObject;
+        
+        console.log("MetaMask installed:", isInstalled);
+        return isInstalled;
+    }
+    
     // Connect wallet
     async function connectWallet() {
+        console.log("Connect wallet button clicked");
+        
+        // First check if MetaMask is installed
+        if (!isMetaMaskInstalled()) {
+            showNotification('Error', 'MetaMask is not installed. Please install MetaMask to connect your wallet.', 'error');
+            // Open MetaMask installation page in a new tab
+            window.open('https://metamask.io/download/', '_blank');
+            return;
+        }
+        
+        console.log("MetaMask is installed, attempting to connect");
+        
+        // Get the correct provider if multiple providers exist
+        let provider;
+        if (window.ethereum) {
+            if (window.ethereum.providers) {
+                provider = window.ethereum.providers.find(p => p.isMetaMask) || window.ethereum;
+                console.log("Found MetaMask provider in providers list");
+            } else {
+                provider = window.ethereum;
+                console.log("Using window.ethereum as provider");
+            }
+        } else if (window.web3 && window.web3.currentProvider) {
+            provider = window.web3.currentProvider;
+            console.log("Using window.web3.currentProvider as provider");
+        }
+        
+        if (!provider) {
+            console.error("No provider found despite MetaMask being detected");
+            showNotification('Error', 'Could not connect to MetaMask. Please refresh and try again.', 'error');
+            return;
+        }
+        
         if (!web3) {
-            const initialized = await initWeb3();
-            if (!initialized) {
-                showNotification('Error', 'Please install MetaMask or OKX Wallet to connect.', 'error');
+            try {
+                web3 = new Web3(provider);
+                console.log("Web3 initialized with provider");
+            } catch (error) {
+                console.error("Error initializing Web3:", error);
+                showNotification('Error', 'Failed to initialize Web3. Please refresh and try again.', 'error');
                 return;
             }
         }
         
         try {
-            accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            console.log("Requesting accounts...");
+            // Request account access
+            accounts = await provider.request({ method: 'eth_requestAccounts' });
+            console.log("Accounts received:", accounts);
             
             if (accounts.length > 0) {
                 isWalletConnected = true;
@@ -130,7 +202,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 showNotification('Success', 'Wallet connected successfully!', 'success');
                 
                 // Listen for account changes
-                window.ethereum.on('accountsChanged', function (newAccounts) {
+                provider.on('accountsChanged', function (newAccounts) {
+                    console.log("Accounts changed:", newAccounts);
                     accounts = newAccounts;
                     if (accounts.length === 0) {
                         isWalletConnected = false;
@@ -142,7 +215,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
                 
                 // Listen for chain changes
-                window.ethereum.on('chainChanged', function () {
+                provider.on('chainChanged', function () {
                     showNotification('Info', 'Network changed. Reloading...', 'info');
                     window.location.reload();
                 });
@@ -155,6 +228,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Update wallet status display
     function updateWalletStatus() {
+        console.log("Updating wallet status. Connected:", isWalletConnected, "Accounts:", accounts);
+        
         if (isWalletConnected && accounts.length > 0) {
             const address = accounts[0];
             const shortAddress = `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
@@ -167,6 +242,10 @@ document.addEventListener('DOMContentLoaded', function() {
             // Enable mint button if shares are selected
             if (selectedShares > 0) {
                 mintButton.disabled = false;
+                mintButton.classList.add('active');
+                console.log("Mint button enabled - shares selected and wallet connected");
+            } else {
+                console.log("Mint button disabled - wallet connected but no shares selected");
             }
         } else {
             walletStatusText.textContent = "Wallet not connected";
@@ -174,6 +253,8 @@ document.addEventListener('DOMContentLoaded', function() {
             walletAddress.textContent = "";
             connectWalletBtn.textContent = "Connect Wallet";
             mintButton.disabled = true;
+            mintButton.classList.remove('active');
+            console.log("Mint button disabled - wallet not connected");
         }
     }
     
@@ -186,8 +267,10 @@ document.addEventListener('DOMContentLoaded', function() {
         // Enable/disable mint button
         if (isWalletConnected && selectedShares > 0) {
             mintButton.disabled = false;
+            mintButton.classList.add('active');
         } else {
             mintButton.disabled = true;
+            mintButton.classList.remove('active');
         }
     }
     
@@ -252,6 +335,13 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Mint tokens
     async function mintTokens() {
+        if (!isMetaMaskInstalled()) {
+            showNotification('Error', 'MetaMask is not installed. Please install MetaMask to mint tokens.', 'error');
+            // Open MetaMask installation page in a new tab
+            window.open('https://metamask.io/download/', '_blank');
+            return;
+        }
+        
         if (!isWalletConnected) {
             showNotification('Error', 'Please connect your wallet first.', 'error');
             return;
@@ -275,13 +365,24 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             // Show loading state
             mintButton.disabled = true;
+            mintButton.classList.remove('active');
             mintButton.textContent = "Processing...";
+            
+            // Get the correct provider
+            let provider = window.ethereum;
+            if (window.ethereum.providers) {
+                provider = window.ethereum.providers.find(p => p.isMetaMask) || window.ethereum;
+            }
             
             // Simulate transaction delay
             await new Promise(resolve => setTimeout(resolve, 2000));
             
             // Mock successful transaction
             // In a real implementation, this would call the contract's mint function
+            // Example:
+            // const contract = new web3.eth.Contract(contractABI, contractAddress);
+            // await contract.methods.mint(selectedShares, referrerAddress || '0x0000000000000000000000000000000000000000')
+            //     .send({ from: accounts[0], value: web3.utils.toWei((selectedShares * PRICE_PER_SHARE).toString(), 'ether') });
             
             // Update UI after successful transaction
             currentRaised += selectedShares * PRICE_PER_SHARE;
@@ -307,6 +408,9 @@ document.addEventListener('DOMContentLoaded', function() {
             // Reset button state
             mintButton.textContent = "Mint MMF";
             mintButton.disabled = false;
+            if (isWalletConnected && selectedShares > 0) {
+                mintButton.classList.add('active');
+            }
         }
     }
     
@@ -542,16 +646,64 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Update countdown every second
     setInterval(updateCountdown, 1000);
-    
-    // Check if Web3 is available and initialize
-    initWeb3().then(initialized => {
-        if (initialized) {
-            // Check if already connected
-            if (window.ethereum && window.ethereum.selectedAddress) {
-                connectWallet();
+
+    // Check if MetaMask is installed and initialize
+    console.log("Checking for MetaMask on page load");
+    if (isMetaMaskInstalled()) {
+        console.log("MetaMask is detected on page load");
+        
+        // Get the correct provider
+        let provider;
+        if (window.ethereum) {
+            if (window.ethereum.providers) {
+                provider = window.ethereum.providers.find(p => p.isMetaMask) || window.ethereum;
+                console.log("Found MetaMask provider in providers list");
+            } else {
+                provider = window.ethereum;
+                console.log("Using window.ethereum as provider");
             }
+        } else if (window.web3 && window.web3.currentProvider) {
+            provider = window.web3.currentProvider;
+            console.log("Using window.web3.currentProvider as provider");
         }
-    });
+        
+        if (provider) {
+            try {
+                web3 = new Web3(provider);
+                console.log("Web3 initialized with provider on page load");
+                
+                // Check if already connected
+                const checkConnection = async () => {
+                    try {
+                        // Try to get accounts without prompting
+                        const accts = await provider.request({ 
+                            method: 'eth_accounts'  // This doesn't trigger the MetaMask popup
+                        });
+                        
+                        console.log("Existing accounts:", accts);
+                        
+                        if (accts && accts.length > 0) {
+                            accounts = accts;
+                            isWalletConnected = true;
+                            updateWalletStatus();
+                            checkUrlParams();
+                            console.log("Wallet already connected:", accts[0]);
+                        }
+                    } catch (error) {
+                        console.error("Error checking for connected accounts:", error);
+                    }
+                };
+                
+                checkConnection();
+            } catch (error) {
+                console.error("Error initializing Web3 on page load:", error);
+            }
+        } else {
+            console.error("No provider found despite MetaMask being detected");
+        }
+    } else {
+        console.log("MetaMask is not installed. Some features may not be available.");
+    }
 
     // Scroll to top button
     const scrollToTopBtn = document.getElementById('scrollToTopBtn');

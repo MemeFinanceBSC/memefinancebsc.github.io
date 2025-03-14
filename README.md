@@ -17,6 +17,13 @@ MEMEFI represents the perfect fusion of Meme culture and Decentralized Finance (
 
 Our motto: **"Sellers regret, holders earn dividends."** MEMEFI transcends the typical Meme coin project, establishing itself as a holder-centric ecosystem that drives value growth through dynamic taxation and follow-up mechanisms.
 
+## 🔗 Important Links
+
+- **Website**: [https://memefinancebsc.github.io/](https://memefinancebsc.github.io/)
+- **Whitepaper**: [https://memefi-sorganization.gitbook.io/doc.memefi](https://memefi-sorganization.gitbook.io/doc.memefi)
+- **Smart Contract**: [https://bscscan.com/](https://bscscan.com/)
+- **Audit Report**: [https://gopluslabs.io/token-security/56/](https://gopluslabs.io/token-security/56/)
+
 ## 💰 Token Information
 
 - **Name**: MEMEFI
@@ -113,10 +120,8 @@ python -m http.server 8000
 
 <div align="center">
   
-[![Twitter](https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://twitter.com/memefi_official)
-[![Telegram](https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/memefi_official)
-[![Discord](https://img.shields.io/badge/Discord-7289DA?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/memefi)
-[![Medium](https://img.shields.io/badge/Medium-12100E?style=for-the-badge&logo=medium&logoColor=white)](https://medium.com/@memefi)
+[![Twitter](https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://x.com/MemeFi_bsc)
+[![Telegram](https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/BSC_memefinance)
 
 </div>
 
@@ -131,6 +136,6 @@ Cryptocurrency investments are volatile and high-risk. The information provided 
 ---
 
 <div align="center">
-  <p>© 2023 MEMEFI. All Rights Reserved.</p>
+  <p>© 2025 MEMEFI. All Rights Reserved.</p>
   <p>Made with ❤️ by the MEMEFI Team</p>
 </div> 
