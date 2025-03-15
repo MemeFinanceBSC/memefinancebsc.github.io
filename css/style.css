@@ -219,14 +219,19 @@ section {
 .nav-link {
   font-size: 1.6rem;
   font-weight: 600;
-  color: var(--binance-white);
   margin: 0 1.5rem;
-  position: relative;
+  color: var(--binance-white);
   padding: 0.5rem 0;
+  position: relative;
+  transition: all 0.3s ease;
 }
 
 .nav-link:hover {
   color: var(--binance-yellow);
+}
+
+.nav-link.active {
+  color: var(--binance-yellow) !important;
 }
 
 .nav-link::after {
@@ -240,7 +245,8 @@ section {
   transition: width 0.3s ease;
 }
 
-.nav-link:hover::after {
+.nav-link:hover::after,
+.nav-link.active::after {
   width: 100%;
 }
 
@@ -258,6 +264,19 @@ section {
   background-color: var(--binance-dark-yellow);
   transform: translateY(-3px);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.btn-connect.connected {
+  background-color: var(--binance-yellow);
+  color: var(--binance-black);
+  border: 1px solid var(--binance-dark-yellow);
+  box-shadow: 0 3px 8px rgba(240, 185, 11, 0.3);
+}
+
+.btn-connect.connected:hover {
+  background-color: var(--binance-dark-yellow);
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(240, 185, 11, 0.4);
 }
 
 .wallet-connect-container {
@@ -455,7 +474,7 @@ section {
 
 .btn-secondary {
   background-color: rgba(240, 185, 11, 0.2);
-  color: var(--binance-black);
+  color: var(--binance-yellow);
   border: 2px solid var(--binance-yellow);
   box-shadow: 0 5px 15px rgba(240, 185, 11, 0.1);
   text-shadow: none;
@@ -1696,14 +1715,15 @@ section {
     font-size: 3rem;
   }
   
-  /* Improved mobile menu styling */
+  /* Enhanced mobile menu styling */
   #navbarNav {
-    background-color: rgba(30, 32, 38, 0.95);
+    background: linear-gradient(135deg, rgba(30, 32, 38, 0.95) 0%, rgba(40, 42, 48, 0.95) 100%);
     padding: 1.5rem;
     border-radius: 0.8rem;
     margin-top: 1rem;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(10px);
+    border: 1px solid rgba(240, 185, 11, 0.1);
   }
   
   .navbar-nav {
@@ -1712,17 +1732,37 @@ section {
   
   .nav-item {
     margin: 0.8rem 0;
+    border-bottom: 1px solid rgba(240, 185, 11, 0.05);
+    padding-bottom: 0.8rem;
+  }
+  
+  .nav-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
   }
   
   .nav-link {
     padding: 0.8rem 1.5rem !important;
     border-radius: 0.5rem;
     transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
   }
   
   .nav-link:hover {
     background-color: rgba(240, 185, 11, 0.1);
     transform: translateX(5px);
+  }
+  
+  .nav-link:visited {
+    color: var(--binance-white);
+  }
+  
+  .nav-link.active {
+    color: var(--binance-white);
+    background-color: rgba(240, 185, 11, 0.1);
+    border-left: 3px solid var(--binance-yellow);
+    padding-left: calc(1.5rem - 3px) !important;
   }
 }
 
