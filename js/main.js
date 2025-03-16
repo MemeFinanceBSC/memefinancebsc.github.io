@@ -627,7 +627,7 @@ function updateWalletStatus() {
         
         // Enable mint button if shares are selected
         if (selectedShares > 0) {
-            mintButton.disabled = false;
+            mintButton.disabled = true;
             mintButton.classList.add('active');
             console.log("Mint button enabled - shares selected and wallet connected");
         } else {
