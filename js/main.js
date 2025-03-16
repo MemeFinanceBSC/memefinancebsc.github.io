@@ -628,7 +628,7 @@ function updateWalletStatus() {
         // Enable mint button if shares are selected
         if (selectedShares > 0) {
             mintButton.disabled = true;
-            mintButton.classList.add('active');
+            // mintButton.classList.add('active');
             console.log("Mint button enabled - shares selected and wallet connected");
         } else {
             console.log("Mint button disabled - wallet connected but no shares selected");
@@ -710,8 +710,8 @@ function updateShareSelection() {
     
     // Enable/disable mint button
     if (isWalletConnected && selectedShares > 0) {
-        mintButton.disabled = false;
-        mintButton.classList.add('active');
+        mintButton.disabled = true;
+        // mintButton.classList.add('active');
     } else {
         mintButton.disabled = true;
         mintButton.classList.remove('active');
@@ -851,9 +851,9 @@ async function mintTokens() {
         
         // Reset button state
         mintButton.textContent = "Mint MMF";
-        mintButton.disabled = false;
+        mintButton.disabled = true;
         if (isWalletConnected && selectedShares > 0) {
-            mintButton.classList.add('active');
+           // mintButton.classList.add('active');
         }
     }
 }
