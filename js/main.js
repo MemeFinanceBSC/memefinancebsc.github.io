@@ -158,6 +158,7 @@ let mmfContract;
     let isWalletConnected = false;
     let referralCount = 0; // Track number of referrals
     let selectedWalletType = ''; // Track which wallet was selected
+    let isIDOActive = true; // Track if IDO is active based on contract status
     
     // Page load effect
     document.body.classList.add('loaded');
@@ -699,11 +700,16 @@ function highlightActiveSection() {
             // Update user share buttons
             updateUserShareButtons();
             
-            // Enable mint button if shares are selected
-            if (selectedShares > 0) {
+            // Enable mint button if shares are selected and IDO is active
+            if (selectedShares > 0 && isIDOActive) {
                 mintButton.disabled = false;
                 mintButton.classList.add('active');
-                console.log("Mint button enabled - shares selected and wallet connected");
+                console.log("Mint button enabled - shares selected, wallet connected, and IDO active");
+            } else if (!isIDOActive) {
+                mintButton.disabled = true;
+                mintButton.classList.remove('active');
+                mintButton.textContent = 'Minting Disabled';
+                console.log("Mint button disabled - IDO inactive");
             } else {
                 console.log("Mint button disabled - wallet connected but no shares selected");
             }
@@ -816,12 +822,21 @@ async function updateReferralCount(address) {
         tokensToReceiveElement.textContent = `${selectedShares * TOKENS_PER_SHARE} MMF`;
         
         // Enable/disable mint button
-        if (isWalletConnected && selectedShares > 0) {
+        if (isWalletConnected && selectedShares > 0 && isIDOActive) {
             mintButton.disabled = false;
             mintButton.classList.add('active');
         } else {
             mintButton.disabled = true;
             mintButton.classList.remove('active');
+            
+            // Set appropriate button text
+            if (!isIDOActive) {
+                mintButton.textContent = 'Minting Disabled';
+            } else if (!isWalletConnected) {
+                mintButton.textContent = 'Connect Wallet to Mint';
+            } else {
+                mintButton.textContent = 'Mint MMF';
+            }
         }
     }
     
@@ -924,14 +939,19 @@ async function updateReferralCount(address) {
             showNotification('Error', 'Please select at least 1 share.', 'error');
             return;
         }
-    
-    // Check if web3 is initialized
-    if (!isWeb3Initialized) {
-        const initResult = await initWeb3();
-        if (!initResult) {
-            showNotification('Error', 'Failed to initialize Web3. Please refresh the page and try again.', 'error');
+
+        if (!isIDOActive) {
+            showNotification('Minting Disabled', 'Minting is currently disabled by the contract admin.', 'error');
             return;
         }
+
+        // Check if web3 is initialized
+        if (!isWeb3Initialized) {
+            const initResult = await initWeb3();
+            if (!initResult) {
+                showNotification('Error', 'Failed to initialize Web3. Please refresh the page and try again.', 'error');
+                return;
+            }
         }
         
         // Get referrer address (if any)
@@ -1323,6 +1343,13 @@ async function updateReferralCount(address) {
             }
             
             return;
+        }
+        
+        // Also check if the IDO is inactive based on contract status
+        if (!isIDOActive && mintButton) {
+            mintButton.disabled = true;
+            mintButton.classList.remove('active');
+            mintButton.textContent = 'Minting Disabled';
         }
         
         // Calculate days, hours, minutes and seconds
@@ -2032,6 +2059,22 @@ async function fetchIDOProgress(forceRefresh = false) {
         const remainingShares = parseInt(idoInfo.remainingSharesCount);
         const totalShares = soldShares + remainingShares;
         
+        // Extract activeStatus and update global variable
+        const activeStatus = idoInfo.activeStatus !== undefined ? idoInfo.activeStatus : true;
+        if (isIDOActive !== activeStatus) {
+            isIDOActive = activeStatus;
+            console.log(`IDO Active Status: ${isIDOActive ? 'Active' : 'Inactive'}`);
+            
+            // Update mint button state immediately when active status changes
+            if (!isIDOActive) {
+                if (mintButton) {
+                    mintButton.disabled = true;
+                    mintButton.classList.remove('active');
+                    mintButton.textContent = 'Minting Disabled';
+                }
+            }
+        }
+        
         console.log("Fetching share value from contract...");
         
         // Fetch share value (price per share)
@@ -2093,6 +2136,20 @@ async function fetchIDOProgress(forceRefresh = false) {
                     const soldShares = parseInt(idoInfo.soldSharesCount);
                     const remainingShares = parseInt(idoInfo.remainingSharesCount);
                     const totalShares = soldShares + remainingShares;
+                    
+                    // Extract activeStatus and update global variable
+                    const activeStatus = idoInfo.activeStatus !== undefined ? idoInfo.activeStatus : true;
+                    if (isIDOActive !== activeStatus) {
+                        isIDOActive = activeStatus;
+                        console.log(`IDO Active Status (fallback): ${isIDOActive ? 'Active' : 'Inactive'}`);
+                        
+                        // Update mint button state immediately when active status changes
+                        if (!isIDOActive && mintButton) {
+                            mintButton.disabled = true;
+                            mintButton.classList.remove('active');
+                            mintButton.textContent = 'Minting Disabled';
+                        }
+                    }
                     
                     // Fetch share value
                     const shareValue = await idoContract.methods.shareValue().call();
